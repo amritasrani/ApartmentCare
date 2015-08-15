@@ -1,0 +1,305 @@
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_users]    Script Date: 08/15/2015 13:06:04 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_users](
+	[User_ID] [int] NOT NULL,
+	[First_Name] [varchar](100) NOT NULL,
+	[Last_Name] [varchar](100) NOT NULL,
+	[Middle_Name] [varchar](100) NULL,
+	[Email_ID] [varchar](100) NOT NULL,
+	[Alternate_Email_ID] [varchar](100) NULL,
+	[Phone_Number] [bigint] NULL,
+	[DOB] [date] NULL,
+	[Gender] [varchar](8) NULL,
+	[Marital_Status] [varchar](15) NULL,
+	[Flat_Number] [varchar](50) NULL,
+	[User_Photo] [image] NULL,
+	[isActive] [bit] NULL,
+	[isAuthenticated] [bit] NULL,
+	[CreatedByID] [int] NULL,
+	[Create_Date] [datetime] NULL,
+	[LastUpdateByID] [int] NULL,
+	[LastUpdateBy_Date] [datetime] NULL,
+ CONSTRAINT [PK_tbl_ac_users] PRIMARY KEY CLUSTERED 
+(
+	[User_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Table for Users' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'tbl_ac_users'
+GO
+
+
+/**tbl_ac_users**/
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_apartment_details]    Script Date: 08/15/2015 13:03:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_apartment_details](
+	[Apartment_ID] [int] NOT NULL,
+	[Apartment_Name] [varchar](200) NOT NULL,
+	[Apartment_Address] [varchar](2000) NULL,
+	[Apartment_Photo] [image] NULL,
+ CONSTRAINT [PK_tbl_ac_apartment_details] PRIMARY KEY CLUSTERED 
+(
+	[Apartment_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_guest_details]    Script Date: 08/15/2015 13:08:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_guest_details](
+	[Guest_ID] [int] NOT NULL,
+	[Guest_Name] [varchar](100) NOT NULL,
+	[Flat_ID] [int] NOT NULL,
+	[Date_Of_Visit] [datetime] NULL,
+	[Guest_Address] [varchar](200) NULL,
+	[CreatedByID] [int] NULL,
+	[Create_Date] [datetime] NULL,
+	[Guest_Phone] [varchar](15) NULL,
+	[Guest_Photo] [image] NULL,
+ CONSTRAINT [PK_tbl_ac_guest_details] PRIMARY KEY CLUSTERED 
+(
+	[Guest_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[tbl_ac_guest_details]  WITH CHECK ADD  CONSTRAINT [fk_flatIdMappingforGuest] FOREIGN KEY([Flat_ID])
+REFERENCES [dbo].[tbl_ac_flats] ([Flat_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_guest_details] CHECK CONSTRAINT [fk_flatIdMappingforGuest]
+GO
+
+
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_flats]    Script Date: 08/15/2015 13:08:26 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_flats](
+	[Flat_ID] [int] NOT NULL,
+	[Apartment_ID] [bigint] NOT NULL,
+ CONSTRAINT [PK_tbl_ac_flats] PRIMARY KEY CLUSTERED 
+(
+	[Flat_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_roles]    Script Date: 08/15/2015 13:08:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_roles](
+	[Role_ID] [int] NOT NULL,
+	[Role_Name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_tbl_ac_roles] PRIMARY KEY CLUSTERED 
+(
+	[Role_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_role_access]    Script Date: 08/15/2015 13:08:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_role_access](
+	[Role_ID] [int] NOT NULL,
+	[Module_ID] [int] NULL,
+ CONSTRAINT [PK_tbl_ac_role_access] PRIMARY KEY CLUSTERED 
+(
+	[Role_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[tbl_ac_role_access]  WITH CHECK ADD  CONSTRAINT [fk_ModuleIdMappingforaccess] FOREIGN KEY([Module_ID])
+REFERENCES [dbo].[tbl_ac_modules] ([Module_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_role_access] CHECK CONSTRAINT [fk_ModuleIdMappingforaccess]
+GO
+
+ALTER TABLE [dbo].[tbl_ac_role_access]  WITH CHECK ADD  CONSTRAINT [fk_roleIdMappingforaccess] FOREIGN KEY([Role_ID])
+REFERENCES [dbo].[tbl_ac_roles] ([Role_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_role_access] CHECK CONSTRAINT [fk_roleIdMappingforaccess]
+GO
+
+
+
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_modules]    Script Date: 08/15/2015 13:09:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_modules](
+	[Module_ID] [int] NOT NULL,
+	[Module_Description] [varchar](200) NULL,
+ CONSTRAINT [PK_tbl_ac_modules] PRIMARY KEY CLUSTERED 
+(
+	[Module_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
+
+
+
+USE [ApartmentCare]
+GO
+
+/****** Object:  Table [dbo].[tbl_ac_apartment_user_mapping]    Script Date: 08/15/2015 13:09:20 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_ac_apartment_user_mapping](
+	[Apartment_ID] [int] NOT NULL,
+	[User_ID] [int] NOT NULL,
+	[Role_ID] [int] NOT NULL,
+	[Flat_ID] [int] NOT NULL,
+ CONSTRAINT [PK_tbl_ac_apartment_user_mapping] PRIMARY KEY CLUSTERED 
+(
+	[Apartment_ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping]  WITH CHECK ADD  CONSTRAINT [fk_apartmentIdMapping] FOREIGN KEY([Apartment_ID])
+REFERENCES [dbo].[tbl_ac_apartment_details] ([Apartment_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping] CHECK CONSTRAINT [fk_apartmentIdMapping]
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping]  WITH CHECK ADD  CONSTRAINT [fk_flatIdMapping] FOREIGN KEY([Flat_ID])
+REFERENCES [dbo].[tbl_ac_flats] ([Flat_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping] CHECK CONSTRAINT [fk_flatIdMapping]
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping]  WITH CHECK ADD  CONSTRAINT [fk_roleIdMapping] FOREIGN KEY([Role_ID])
+REFERENCES [dbo].[tbl_ac_roles] ([Role_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping] CHECK CONSTRAINT [fk_roleIdMapping]
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping]  WITH CHECK ADD  CONSTRAINT [fk_userIdMapping] FOREIGN KEY([User_ID])
+REFERENCES [dbo].[tbl_ac_users] ([User_ID])
+GO
+
+ALTER TABLE [dbo].[tbl_ac_apartment_user_mapping] CHECK CONSTRAINT [fk_userIdMapping]
+GO
+
